@@ -78,6 +78,7 @@ dishRouter.get('/dishes', async (req: Request, res: Response) => {
       select: {
         version: true,
       },
+      distinct: ['version'],
     })
 
     res.status(200).json({ versions })
