@@ -11,18 +11,13 @@ authRouter.post(
     req: Request<
       Record<string, never>,
       Record<string, never>,
-      { email: string; password: string; login: string }
+      { email: string; password: string; fullname: string; phone: string }
     >,
     res: Response
   ) => {
     try {
-      const { email, password, login } = req.body
       await prisma.user.create({
-        data: {
-          email: email,
-          password: password,
-          login: login,
-        },
+        data: req.body,
       })
       res.status(201).end()
     } catch (error: unknown) {
@@ -72,16 +67,29 @@ authRouter.post(
   }
 )
 
-dishRouter.get('/dishes', async (req: Request, res: Response) => {
+dishRouter.get('/versions', async (req: Request, res: Response) => {
   try {
     const versions = await prisma.dish.findMany({
       select: {
         version: true,
       },
       distinct: ['version'],
+      orderBy: {
+        version: 'asc',
+      },
     })
 
     res.status(200).json({ versions })
+  } catch (error) {
+    res.status(400).json({ error: 'An error occured' })
+  }
+})
+
+dishRouter.get('/dishes', async (req: Request, res: Response) => {
+  try {
+    const dishes = await prisma.dish.findMany()
+
+    res.status(200).json({ dishes })
   } catch (error) {
     res.status(400).json({ error: 'An error occured' })
   }

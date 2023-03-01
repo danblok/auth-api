@@ -4,3 +4,4 @@ node_modules
 .vscode
 prisma/migrations
 prisma/dev.db
+dev.db-journal
