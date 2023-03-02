@@ -79,7 +79,7 @@ dishRouter.get('/versions', async (req: Request, res: Response) => {
       },
     })
 
-    res.status(200).json({ versions })
+    res.status(200).json({ versions: versions.map((item) => item.version) })
   } catch (error) {
     res.status(400).json({ error: 'An error occured' })
   }
